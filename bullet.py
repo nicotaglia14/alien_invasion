@@ -6,7 +6,7 @@ from pygame.sprite import Sprite
 class Bullet(Sprite):
 
     def __init__(self, ai_game):
-        # create a bullet oject at the ship's current position
+        # create a bullet object at the ship's current position
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
