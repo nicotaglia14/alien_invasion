@@ -13,13 +13,12 @@ class Alien(Sprite):
         self.settings = ai_game.settings
         self.scoreboard = ai_game.sb
         self.level = int(self.scoreboard.level_str)
-        # self.alien_points = self.settings.alien_points
 
         # load the alien image and set its rect attribute
-        if self.level % 5 == 0:
-            self.image = pygame.image.load('images/alien2.png')
-        else:
+        if (self.level + 1) % 5 == 0:
             self.image = pygame.image.load('images/alien.png')
+        else:
+            self.image = pygame.image.load('images/alien2.png')
 
         self.rect = self.image.get_rect()
 
