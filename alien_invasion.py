@@ -10,7 +10,6 @@ from button import Button
 from scoreboard import Scoreboard
 
 
-
 # Overall class to manage game assets and behavior
 class ALienInvasion:
     def __init__(self):

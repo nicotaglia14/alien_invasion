@@ -1,6 +1,5 @@
 import pygame.font
 from pygame.sprite import Group
-from ship import Ship
 from lives import Life
 
 
@@ -48,8 +47,8 @@ class Scoreboard:
 
     def prep_level(self):
         # turn the level into a rendered image
-        level_str = str(self.stats.level)
-        self.level_image = self.font.render(level_str, True, self.text_color, self.settings.bg_color)
+        self.level_str = str(self.stats.level)
+        self.level_image = self.font.render(self.level_str, True, self.text_color, self.settings.bg_color)
 
         # position the level below the score
         self.level_rect = self.level_image.get_rect()

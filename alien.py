@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
+from settings import Settings
 
 
 # class to represent the alien
@@ -10,9 +11,16 @@ class Alien(Sprite):
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
+        self.scoreboard = ai_game.sb
+        self.level = int(self.scoreboard.level_str)
+        # self.alien_points = self.settings.alien_points
 
         # load the alien image and set its rect attribute
-        self.image = pygame.image.load('images/alien1.png')
+        if self.level % 5 == 0:
+            self.image = pygame.image.load('images/alien2.png')
+        else:
+            self.image = pygame.image.load('images/alien.png')
+
         self.rect = self.image.get_rect()
 
         # start each new alien near the top left of the screen
