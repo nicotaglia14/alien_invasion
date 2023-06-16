@@ -1,6 +1,5 @@
 import pygame
 from pygame.sprite import Sprite
-from settings import Settings
 
 
 # class to represent the alien

@@ -19,7 +19,11 @@ class ALienInvasion:
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # Set the screen size to unknown
         self.settings.screen_width = self.screen.get_rect().width  # Get the screen width and set that for the size
         self.settings.screen_height = self.screen.get_rect().height  # Get the screen height and set that for the size
+
         pygame.display.set_caption("Alien Invasion")
+
+        self.background_image = pygame.image.load("images/bg.png").convert()
+        self.background_image = pygame.transform.scale(self.background_image, (self.settings.screen_width, self.settings.screen_height))
 
         # create an instance to store game statistics, and create a scoreboard
         self.stats = GameStats(self)
@@ -227,7 +231,9 @@ class ALienInvasion:
 
     def _update_screen(self):
         # update images on the screen, and flip to the new screen.
-        self.screen.fill(self.settings.bg_color)
+        # self.screen.fill(self.settings.bg_color)
+        self.screen.blit(self.background_image, (0, 0))
+
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()

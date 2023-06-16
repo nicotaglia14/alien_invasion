@@ -1,17 +1,18 @@
 # A class to store all the settings for Alien Invasion
 
+
 class Settings:
     def __init__(self):
         # Screen settings
         self.screen_width = 1200
         self.screen_height = 800
-        self.bg_color = (15, 15, 15)
+        self.bg_color = (0, 0, 0)
 
         # ship settings
         self.ship_limit = 3
 
         # bullet settings
-        self.bullet_width = 1000
+        self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (255, 255, 255)
         self.bullets_allowed = 3
