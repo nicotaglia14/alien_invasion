@@ -22,6 +22,7 @@ class ALienInvasion:
 
         pygame.display.set_caption("Alien Invasion")
 
+        # set the image for the background
         self.background_image = pygame.image.load("images/bg.png").convert()
         self.background_image = pygame.transform.scale(self.background_image, (self.settings.screen_width, self.settings.screen_height))
 
@@ -81,6 +82,7 @@ class ALienInvasion:
             self.sb.prep_score()
             self.sb.prep_level()
             self.sb.prep_ships()
+            self.sb.static_lives()
 
             # create a new fleet and center the ship
             self._create_fleet()
@@ -142,6 +144,7 @@ class ALienInvasion:
             self.settings.increase_speed()
 
             # increase level
+
             self.stats.level += 1
             self.sb.prep_level()
 
@@ -204,9 +207,13 @@ class ALienInvasion:
             # decrement ships_left, and update scoreboard
             self.stats.ships_left -= 1
             self.sb.prep_ships()
+            self.sb.static_lives()
+
+            # self.stats.level -= 1
+            # self.sb.prep_level()
 
             # pause
-            sleep(0.25)
+            sleep(0.5)
 
         else:
             self.stats.game_active = False

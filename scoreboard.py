@@ -1,6 +1,7 @@
 import pygame.font
 from pygame.sprite import Group
 from lives import Life
+from alien import Alien
 
 
 class Scoreboard:
@@ -47,7 +48,7 @@ class Scoreboard:
 
     def prep_level(self):
         # turn the level into a rendered image
-        self.level_str = str(self.stats.level + 1)
+        self.level_str = str(self.stats.level)
         self.level_image = self.font.render(self.level_str, True, self.text_color, self.settings.bg_color)
 
         # position the level below the score
@@ -59,8 +60,17 @@ class Scoreboard:
         # show how many ships are left
         self.ships = Group()
         for ship_number in range(self.stats.ships_left):
-            life = Life(self.ai_game)
+            life = Life("dynamic")
             life.rect.x = 10 + ship_number * life.rect.width
+            life.rect.y = 10
+            self.ships.add(life)
+
+    def static_lives(self):
+        # show the amount of lives that the player has
+        self.lives = Group()
+        for life_number in range(self.settings.ship_limit):
+            life = Life("static")
+            life.rect.x = 10 + life_number * life.rect.width
             life.rect.y = 10
             self.ships.add(life)
 

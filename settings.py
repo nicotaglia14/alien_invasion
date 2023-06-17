@@ -12,7 +12,7 @@ class Settings:
         self.ship_limit = 3
 
         # bullet settings
-        self.bullet_width = 3
+        self.bullet_width = 1500
         self.bullet_height = 15
         self.bullet_color = (255, 255, 255)
         self.bullets_allowed = 3
@@ -47,5 +47,3 @@ class Settings:
         self.alien_speed *= self.speedup_scale
 
         self.alien_points = int(self.alien_points * self.score_scale)
-
-
