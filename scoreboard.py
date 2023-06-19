@@ -1,13 +1,12 @@
 import pygame.font
 from pygame.sprite import Group
 from lives import Life
-from alien import Alien
 
 
 class Scoreboard:
     # a class to report scoring information
     def __init__(self, ai_game):
-        # initialize scorekeeping attributes
+        # initialize score keeping attributes
         self.ai_game = ai_game
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()

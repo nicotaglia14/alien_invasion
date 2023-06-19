@@ -9,6 +9,8 @@ class GameStats:
         # Start Alien Invasion in an active state
         self.game_active = False
 
+        self.repeat_game = False
+
         # high score should never be reset
         self.high_score = 0
 
@@ -17,4 +19,6 @@ class GameStats:
         self.ships_left = self.settings.ship_limit
         self.score = 0
         self.level = 1
+
+
 

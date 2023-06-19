@@ -24,7 +24,8 @@ class ALienInvasion:
 
         # set the image for the background
         self.background_image = pygame.image.load("images/bg.png").convert()
-        self.background_image = pygame.transform.scale(self.background_image, (self.settings.screen_width, self.settings.screen_height))
+        self.background_image = pygame.transform.scale(self.background_image,
+                                                       (self.settings.screen_width, self.settings.screen_height))
 
         # create an instance to store game statistics, and create a scoreboard
         self.stats = GameStats(self)
@@ -32,7 +33,6 @@ class ALienInvasion:
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
-
         self._create_fleet()
 
         # make the play button
@@ -44,9 +44,10 @@ class ALienInvasion:
             self._check_events()
 
             if self.stats.game_active:
+                self._check_alien_type()
+                self._update_aliens()
                 self.ship.update()
                 self._update_bullets()
-                self._update_aliens()
 
             self._update_screen()
 
@@ -80,12 +81,13 @@ class ALienInvasion:
             self.aliens.empty()
             self.bullets.empty()
             self.sb.prep_score()
-            self.sb.prep_level()
             self.sb.prep_ships()
             self.sb.static_lives()
 
             # create a new fleet and center the ship
             self._create_fleet()
+
+            self.sb.prep_level()
             self.ship.center_ship()
 
             # hide the mouse cursor
@@ -144,9 +146,10 @@ class ALienInvasion:
             self.settings.increase_speed()
 
             # increase level
-
             self.stats.level += 1
             self.sb.prep_level()
+
+        self.stats.repeat_game = False
 
     def _update_aliens(self):
         # update the positions of every alien in the fleet
@@ -160,9 +163,20 @@ class ALienInvasion:
         # check for aliens getting to the bottom of the screen
         self._check_aliens_bottom()
 
+    def _check_alien_type(self):
+        if (self.stats.level + 1) % 5 == 0:
+            self.alien_type = "blue"
+        else:
+            self.alien_type = "yellow"
+        return self.alien_type
+
     def _create_fleet(self):
         # create an alien and then a fleet
-        alien = Alien(self)
+        if self.stats.repeat_game:
+            alien = Alien(self, "yellow")
+        else:
+            alien = Alien(self, self._check_alien_type())
+
         alien_width, alien_height = alien.rect.size
         available_space_x = self.settings.screen_width - (2 * alien_width)
         number_aliens_x = available_space_x // (2 * alien_width)
@@ -179,7 +193,11 @@ class ALienInvasion:
 
     def _create_alien(self, alien_number, row_number):
         # creates ab alien and places it in the row
-        alien = Alien(self)
+        if self.stats.repeat_game:
+            alien = Alien(self, "yellow")
+        else:
+            alien = Alien(self, self._check_alien_type())
+
         alien_width, alien_height = alien.rect.size
         alien.x = alien_width + 2 * alien_width * alien_number
         alien.rect.x = alien.x
@@ -209,9 +227,6 @@ class ALienInvasion:
             self.sb.prep_ships()
             self.sb.static_lives()
 
-            # self.stats.level -= 1
-            # self.sb.prep_level()
-
             # pause
             sleep(0.5)
 
@@ -222,6 +237,8 @@ class ALienInvasion:
         # get rid of any remaining aliens and bullets
         self.aliens.empty()
         self.bullets.empty()
+
+        self.stats.repeat_game = True
 
         # create a new fleet and center the ship
         self._create_fleet()

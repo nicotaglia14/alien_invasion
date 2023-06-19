@@ -1,23 +1,35 @@
 import pygame
 from pygame.sprite import Sprite
+from game_stats import GameStats
 
 
 # class to represent the alien
 class Alien(Sprite):
 
-    def __init__(self, ai_game):
+    def __init__(self, ai_game, alien_type):
         # initialize the alien and set starting position
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.scoreboard = ai_game.sb
-        self.level = int(self.scoreboard.level_str)
+        self.stats = GameStats(self)
+        self.level = self.stats.level
 
         # load the alien image and set its rect attribute
-        if (self.level + 1) % 5 == 0:
+        """
+        if (self.level % 5) == 0:
             self.image = pygame.image.load('images/alien.png')
         else:
             self.image = pygame.image.load('images/alien2.png')
+        """
+
+        if alien_type == "yellow":
+            self.image = pygame.image.load('images/alien2.png')
+        elif alien_type == "blue":
+            self.image = pygame.image.load('images/alien.png')
+        else:
+            # Default to dynamic image if image_type is not recognized
+            self.image = pygame.image.load('images/dynamic_life.png')
 
         self.rect = self.image.get_rect()
 
