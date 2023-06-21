@@ -16,20 +16,13 @@ class Alien(Sprite):
         self.level = self.stats.level
 
         # load the alien image and set its rect attribute
-        """
-        if (self.level % 5) == 0:
-            self.image = pygame.image.load('images/alien.png')
-        else:
-            self.image = pygame.image.load('images/alien2.png')
-        """
-
         if alien_type == "yellow":
             self.image = pygame.image.load('images/alien2.png')
         elif alien_type == "blue":
             self.image = pygame.image.load('images/alien.png')
         else:
             # Default to dynamic image if image_type is not recognized
-            self.image = pygame.image.load('images/dynamic_life.png')
+            self.image = pygame.image.load('images/alien2.png')
 
         self.rect = self.image.get_rect()
 

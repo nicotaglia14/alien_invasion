@@ -143,11 +143,17 @@ class ALienInvasion:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
-            self.settings.increase_speed()
+
+            # increase the speed every 5 levels
+            if self.alien_type == "blue":
+                self.settings.increase_speed()
 
             # increase level
             self.stats.level += 1
             self.sb.prep_level()
+
+            # increase points
+            self.settings.increase_points()
 
         self.stats.repeat_game = False
 
