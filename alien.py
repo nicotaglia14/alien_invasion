@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 from game_stats import GameStats
+from bullet import Bullet
 
 
 # class to represent the alien
@@ -43,3 +44,7 @@ class Alien(Sprite):
         # move the alien to the right
         self.x += (self.settings.alien_speed * self.settings.fleet_direction)
         self.rect.x = self.x
+
+    def fire_back(self, bullets_group):
+        bullet = Bullet(self.rect.centerx, self.rect.bottom)
+        bullets_group.add(bullet)

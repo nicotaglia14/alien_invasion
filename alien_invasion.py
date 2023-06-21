@@ -1,4 +1,6 @@
 import sys
+import random
+import time
 from time import sleep
 import pygame
 from settings import Settings
@@ -8,6 +10,7 @@ from bullet import Bullet
 from alien import Alien
 from button import Button
 from scoreboard import Scoreboard
+from alien_bullet import AlienBullet
 
 
 # Overall class to manage game assets and behavior
@@ -32,11 +35,15 @@ class ALienInvasion:
         self.sb = Scoreboard(self)
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.alien_bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
 
         # make the play button
         self.play_button = Button(self, "Play")
+
+        # set a starting time
+        self.last_alien_shot_time = 0
 
     def run_game(self):
         # Start the main loop for the game
@@ -48,6 +55,8 @@ class ALienInvasion:
                 self._update_aliens()
                 self.ship.update()
                 self._update_bullets()
+                if self.stats.level > 5:
+                    self._fire_alien_bullet()
 
             self._update_screen()
 
@@ -80,6 +89,7 @@ class ALienInvasion:
             self.stats.game_active = True
             self.aliens.empty()
             self.bullets.empty()
+            self.alien_bullets.empty()
             self.sb.prep_score()
             self.sb.prep_ships()
             self.sb.static_lives()
@@ -117,16 +127,41 @@ class ALienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
+    def _fire_alien_bullet(self):
+        current_time = time.time()
+        if current_time - self.last_alien_shot_time >= self.settings.shot_gap:
+            self.last_alien_shot_time = current_time
+
+            if len(self.alien_bullets) < self.settings.bullets_allowed:
+                random_alien = random.choice(self.aliens.sprites())
+                alien_bullet = AlienBullet(self, random_alien.rect.midbottom)
+                alien_bullet.fire()
+                self.alien_bullets.add(alien_bullet)
+
     def _update_bullets(self):
         # update position of bullets and get rid of old bullets
         self.bullets.update()
+        self.alien_bullets.update()
 
         # get rid of the bullets that have disappeared
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
 
+        # get rid of the bullets that have disappeared
+        for alien_bullet in self.alien_bullets.copy():
+            if alien_bullet.rect.top >= self.settings.screen_height:
+                self.alien_bullets.remove(alien_bullet)
+
         self._check_bullet_alien_collision()
+        self._check_alien_bullet_ship_collision()
+
+    def _check_alien_bullet_ship_collision(self):
+        # Check for aliens hitting the ship with bullets
+        for alien_bullet in self.alien_bullets:
+            if alien_bullet.rect.colliderect(self.ship.rect):
+                self._ship_hit()
+                break
 
     def _check_bullet_alien_collision(self):
         # check for any bullets that have hit aliens
@@ -144,8 +179,7 @@ class ALienInvasion:
             self.bullets.empty()
             self._create_fleet()
 
-            # increase the speed every 5 levels
-            if self.alien_type == "blue":
+            if self.stats.level % 2 == 0:
                 self.settings.increase_speed()
 
             # increase level
@@ -234,7 +268,7 @@ class ALienInvasion:
             self.sb.static_lives()
 
             # pause
-            sleep(0.5)
+            sleep(1)
 
         else:
             self.stats.game_active = False
@@ -243,6 +277,7 @@ class ALienInvasion:
         # get rid of any remaining aliens and bullets
         self.aliens.empty()
         self.bullets.empty()
+        self.alien_bullets.empty()
 
         self.stats.repeat_game = True
 
@@ -267,6 +302,8 @@ class ALienInvasion:
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        for alien_bullet in self.alien_bullets.sprites():
+            alien_bullet.draw_bullet()
         self.aliens.draw(self.screen)
 
         # draw the score information
