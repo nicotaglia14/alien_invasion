@@ -25,9 +25,6 @@ class Settings:
         self.alien_bullet_height = 18
         self.alien_bullet_color = (255, 152, 0)
 
-        # difference between shots
-        self.shot_gap = 3
-
         # alien settings
         self.fleet_drop_speed = 10
 
@@ -49,6 +46,9 @@ class Settings:
 
         # scoring
         self.alien_points = 50
+
+        # difference between shots
+        self.shot_gap = 3
 
     def increase_speed(self):
         # increase speed settings and alien point values

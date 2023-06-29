@@ -78,7 +78,6 @@ class Scoreboard:
             self.ships.add(life)
 
     def timer_count(self):
-        # self.start_time = time.time()
         self.elapsed_time = round(10 - (time.time() - self.ai_game.start_time))
         timer_str = "Bonus: {} seconds".format(self.elapsed_time)
         self.timer_image = self.font.render(timer_str, True, self.text_color, self.settings.bg_color)

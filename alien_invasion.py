@@ -60,6 +60,9 @@ class ALienInvasion:
 
             self._update_screen()
 
+            if (self.stats.level + 1) % 5 == 0:
+                self.sb.elapsed_time = 10
+
     def _check_events(self):
         # Watch for keyboard and mouse events
         for event in pygame.event.get():
@@ -315,11 +318,9 @@ class ALienInvasion:
         if not self.stats.game_active:
             self.play_button.draw_button()
 
-        if self.stats.level % 5 == 0 and self.sb.elapsed_time > 0:
+        if (self.stats.level % 5) == 0 and self.sb.elapsed_time > 0 and self.stats.game_active:
             self.sb.timer_count()
-        else:
-            self.sb.elapsed_time = 1
-            """THIS CRASHES"""
+
         pygame.display.flip()
 
 
