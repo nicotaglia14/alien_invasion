@@ -14,11 +14,23 @@ class GameStats:
         # high score should never be reset
         self.high_score = 0
 
+        self.game_timer = 30
+
     def reset_stats(self):
         # initialize statistics that can change during the game
         self.ships_left = self.settings.ship_limit
         self.score = 0
         self.level = 1
+
+    def bonus(self):
+        # here is where we check what happens when the bonus is needed
+        if self.ships_left < 3:
+            self.ships_left += 1
+        elif self.settings.ship_limit == 3:
+            self.score += 1000
+        else:
+            print("something is wrong here")
+
 
 
 

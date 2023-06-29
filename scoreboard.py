@@ -1,3 +1,5 @@
+import time
+
 import pygame.font
 from pygame.sprite import Group
 from lives import Life
@@ -22,6 +24,8 @@ class Scoreboard:
         self.prep_high_score()
         self.prep_level()
         self.prep_ships()
+
+        self.elapsed_time = 1
 
     def prep_score(self):
         # turn the score into a rendered image
@@ -72,6 +76,16 @@ class Scoreboard:
             life.rect.x = 10 + life_number * life.rect.width
             life.rect.y = 10
             self.ships.add(life)
+
+    def timer_count(self):
+        # self.start_time = time.time()
+        self.elapsed_time = round(10 - (time.time() - self.ai_game.start_time))
+        timer_str = "Bonus: {} seconds".format(self.elapsed_time)
+        self.timer_image = self.font.render(timer_str, True, self.text_color, self.settings.bg_color)
+        self.timer_rect = self.timer_image.get_rect()
+        self.timer_rect.centerx = self.screen_rect.centerx
+        self.timer_rect.top = self.high_score_rect.bottom
+        self.screen.blit(self.timer_image, self.timer_rect)
 
     def show_score(self):
         # draw scores, level, and ships to the screen

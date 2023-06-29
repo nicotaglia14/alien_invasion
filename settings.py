@@ -15,16 +15,17 @@ class Settings:
         self.ship_limit = 3
 
         # bullet settings
-        self.bullet_width = 3
+        self.bullet_width = 3000
         self.bullet_height = 15
         self.bullet_color = (255, 255, 255)
         self.bullets_allowed = 3
 
         # alien bullet settings
-        self.alien_bullet_width = 4
-        self.alien_bullet_height = 15
-        self.alien_bullet_color = (239, 255, 0)
+        self.alien_bullet_width = 3
+        self.alien_bullet_height = 18
+        self.alien_bullet_color = (255, 152, 0)
 
+        # difference between shots
         self.shot_gap = 3
 
         # alien settings
@@ -35,8 +36,6 @@ class Settings:
 
         # how quickly the alien point values increase
         self.score_scale = 1.5
-
-
 
     def initialize_dynamic_settings(self):
         # initialize settings that change throughout the game
@@ -53,7 +52,6 @@ class Settings:
 
     def increase_speed(self):
         # increase speed settings and alien point values
-
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale

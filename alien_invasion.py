@@ -115,7 +115,6 @@ class ALienInvasion:
             sys.exit()
 
     def _check_keyup_events(self, event):
-
         if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
@@ -177,6 +176,7 @@ class ALienInvasion:
         # destroy existing bullets and create new fleet
         if not self.aliens:
             self.bullets.empty()
+            self.alien_bullets.empty()
             self._create_fleet()
 
             if self.stats.level % 2 == 0:
@@ -216,6 +216,8 @@ class ALienInvasion:
             alien = Alien(self, "yellow")
         else:
             alien = Alien(self, self._check_alien_type())
+
+        self.start_time = time.time()
 
         alien_width, alien_height = alien.rect.size
         available_space_x = self.settings.screen_width - (2 * alien_width)
@@ -313,6 +315,11 @@ class ALienInvasion:
         if not self.stats.game_active:
             self.play_button.draw_button()
 
+        if self.stats.level % 5 == 0 and self.sb.elapsed_time > 0:
+            self.sb.timer_count()
+        else:
+            self.sb.elapsed_time = 1
+            """THIS CRASHES"""
         pygame.display.flip()
 
 
