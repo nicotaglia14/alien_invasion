@@ -318,6 +318,7 @@ class ALienInvasion:
         if not self.stats.game_active:
             self.play_button.draw_button()
 
+        # show the counter every 5 levels
         if (self.stats.level % 5) == 0 and self.sb.elapsed_time > 0 and self.stats.game_active:
             self.sb.timer_count()
 
