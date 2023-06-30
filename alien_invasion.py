@@ -173,6 +173,7 @@ class ALienInvasion:
         if collisions:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
+                print(self.settings.alien_points)
             self.sb.prep_score()
             self.sb.check_high_score()
 
@@ -181,6 +182,10 @@ class ALienInvasion:
             self.bullets.empty()
             self.alien_bullets.empty()
             self._create_fleet()
+
+            if self.sb.elapsed_time > 0 and self.stats.level % 5 == 0:
+                self.stats.bonus()
+                self.sb.prep_ships()
 
             if self.stats.level % 2 == 0:
                 self.settings.increase_speed()

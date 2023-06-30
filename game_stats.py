@@ -21,14 +21,8 @@ class GameStats:
         self.level = 1
 
     def bonus(self):
-        # here is where we check what happens when the bonus is needed
+        # here is where we check what happens when the bonus is needed\
         if self.ships_left < 3:
             self.ships_left += 1
-        elif self.settings.ship_limit == 3:
-            self.score += 1000
         else:
-            print("something is wrong here")
-
-
-
-
+            self.score += self.settings.alien_points * 10

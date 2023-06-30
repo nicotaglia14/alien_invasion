@@ -17,6 +17,7 @@ class Scoreboard:
 
         # font settings for scoring information
         self.text_color = (255, 255, 255)
+        self.bonus_color = (255, 255, 0)
         self.font = pygame.font.SysFont(None, 48)
 
         # prepare the initial score images
@@ -80,7 +81,7 @@ class Scoreboard:
     def timer_count(self):
         self.elapsed_time = round(10 - (time.time() - self.ai_game.start_time))
         timer_str = "Bonus: {} seconds".format(self.elapsed_time)
-        self.timer_image = self.font.render(timer_str, True, self.text_color, self.settings.bg_color)
+        self.timer_image = self.font.render(timer_str, True, self.bonus_color, self.settings.bg_color)
         self.timer_rect = self.timer_image.get_rect()
         self.timer_rect.centerx = self.screen_rect.centerx
         self.timer_rect.top = self.high_score_rect.bottom
