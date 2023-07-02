@@ -40,8 +40,8 @@ class ALienInvasion:
         self._create_fleet()
 
         # make the play and quit buttons
-        self.play_button = Button(self, "Play", (0, 255, 0), 300)
-        self.quit_button = Button(self, "Quit", (255, 0, 0), 370)
+        self.play_button = Button(self, "Play", (0, 255, 0), 430)
+        self.quit_button = Button(self, "Quit", (255, 0, 0), 490)
 
         # set a starting time
         self.last_alien_shot_time = 0
@@ -50,6 +50,7 @@ class ALienInvasion:
         # Start the main loop for the game
         while True:
             self._check_events()
+            self.sb.game_banners()
 
             if self.stats.game_active:
                 self._check_alien_type()

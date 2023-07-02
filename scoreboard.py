@@ -32,7 +32,7 @@ class Scoreboard:
         # turn the score into a rendered image
         rounded_score = round(self.stats.score, -1)
         score_str = "{:,}".format(rounded_score)
-        self.score_image = self.font.render(score_str, True, self.text_color, self.settings.bg_color)
+        self.score_image = self.font.render(score_str, True, self.text_color, None)
 
         # display the score at the top right of the screen
         self.score_rect = self.score_image.get_rect()
@@ -43,7 +43,7 @@ class Scoreboard:
         # turn the high score into a rendered image
         high_score = round(self.stats.high_score, -1)
         high_score_str = "{:,}".format(high_score)
-        self.high_score_image = self.font.render(high_score_str, True, self.text_color, self.settings.bg_color)
+        self.high_score_image = self.font.render(high_score_str, True, self.text_color, None)
 
         # display the high_score at the top of the screen
         self.high_score_rect = self.high_score_image.get_rect()
@@ -52,8 +52,8 @@ class Scoreboard:
 
     def prep_level(self):
         # turn the level into a rendered image
-        self.level_str = str(self.stats.level)
-        self.level_image = self.font.render(self.level_str, True, self.text_color, self.settings.bg_color)
+        self.level_str = "Level {}".format(self.stats.level)
+        self.level_image = self.font.render(self.level_str, True, self.text_color, None)
 
         # position the level below the score
         self.level_rect = self.level_image.get_rect()
@@ -78,10 +78,21 @@ class Scoreboard:
             life.rect.y = 10
             self.ships.add(life)
 
+    def game_banners(self):
+        if not self.stats.game_active and self.stats.ships_left == 0:
+            self.banners = pygame.image.load('images/game_over.png')
+        else:
+            self.banners = pygame.image.load('images/alien_invasion.png')
+
+        self.banners_rect = self.banners.get_rect()
+        self.banners_rect.centerx = self.screen_rect.centerx
+        self.banners_rect.y = 90
+
+
     def timer_count(self):
         self.elapsed_time = round(10 - (time.time() - self.ai_game.start_time))
         timer_str = "Bonus: {} seconds".format(self.elapsed_time)
-        self.timer_image = self.font.render(timer_str, True, self.bonus_color, self.settings.bg_color)
+        self.timer_image = self.font.render(timer_str, True, self.bonus_color, None)
         self.timer_rect = self.timer_image.get_rect()
         self.timer_rect.centerx = self.screen_rect.centerx
         self.timer_rect.top = self.high_score_rect.bottom
@@ -92,6 +103,9 @@ class Scoreboard:
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
+
+        if not self.stats.game_active:
+            self.screen.blit(self.banners, self.banners_rect)
         self.ships.draw(self.screen)
 
     def check_high_score(self):
