@@ -39,8 +39,9 @@ class ALienInvasion:
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
 
-        # make the play button
-        self.play_button = Button(self, "Play")
+        # make the play and quit buttons
+        self.play_button = Button(self, "Play", (0, 255, 0), 300)
+        self.quit_button = Button(self, "Quit", (255, 0, 0), 370)
 
         # set a starting time
         self.last_alien_shot_time = 0
@@ -81,6 +82,7 @@ class ALienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+                self._check_quit_button(mouse_pos)
 
     def _check_play_button(self, mouse_pos):
         # start a new game when the player clicks play
@@ -105,6 +107,11 @@ class ALienInvasion:
 
             # hide the mouse cursor
             pygame.mouse.set_visible(False)
+
+    def _check_quit_button(self, mouse_pos):
+        button_clicked = self.quit_button.rect.collidepoint(mouse_pos)
+        if button_clicked:
+            sys.exit()
 
     def _check_keydown_events(self, event):
         # respond to keypress
@@ -186,6 +193,7 @@ class ALienInvasion:
             if self.sb.elapsed_time > 0 and self.stats.level % 5 == 0:
                 self.stats.bonus()
                 self.sb.prep_ships()
+                self.sb.static_lives()
 
             if self.stats.level % 2 == 0:
                 self.settings.increase_speed()
@@ -322,6 +330,7 @@ class ALienInvasion:
         # draw the play button if the game is inactive
         if not self.stats.game_active:
             self.play_button.draw_button()
+            self.quit_button.draw_button()
 
         # show the counter every 5 levels
         if (self.stats.level % 5) == 0 and self.sb.elapsed_time > 0 and self.stats.game_active:
