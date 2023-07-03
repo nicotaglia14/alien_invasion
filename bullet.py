@@ -1,30 +1,34 @@
 import pygame
-from pygame.sprite import Sprite
 
 
-# class to manage bullets fired from the ship
-class Bullet(Sprite):
-
-    def __init__(self, ai_game):
-        # create a bullet object at the ship's current position
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, ai_game, position, bullet_type):
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
-        self.color = self.settings.bullet_color
+        self.bullet_type = bullet_type
 
-        # create a bullet rect at (0, 0) and then set correct position
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)
-        self.rect.midtop = ai_game.ship.rect.midtop
+        if self.bullet_type == 'alien':
+            self.color = self.settings.alien_bullet_color
+            self.rect = pygame.Rect(0, 0, self.settings.alien_bullet_width, self.settings.alien_bullet_height)
+        else:
+            self.color = self.settings.bullet_color
+            self.rect = pygame.Rect(0, 0, self.settings.bullet_width, self.settings.bullet_height)
 
-        # store the bullets position as a decimal value
+        self.rect.midbottom = position
         self.y = float(self.rect.y)
 
     def update(self):
-        # move the bullet up the screen and update its decimal position
-        self.y -= self.settings.bullet_speed
-        # update rect position
+        if self.bullet_type == 'alien':
+            self.y += self.settings.alien_bullet_speed
+        else:
+            self.y -= self.settings.bullet_speed
+
         self.rect.y = self.y
 
     def draw_bullet(self):
-        # draw the bullet on the screen
         pygame.draw.rect(self.screen, self.color, self.rect)
+
+    def fire(self):
+        # Set the bullet in motion
+        self.speed = self.settings.alien_bullet_speed
