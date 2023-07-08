@@ -37,6 +37,7 @@ class ALienInvasion:
         self.alien_bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
+        self.alien = Alien(self)
 
         # make the play and quit buttons
         self.play_button = Button(self, "Play", (0, 255, 0), 430)
@@ -131,14 +132,20 @@ class ALienInvasion:
 
     # ALIEN-RELATED FUNCTIONS
     def _check_alien_type(self):
+        random_alien = random.randint(1, 50)
         if (self.stats.level + 1) % 5 == 0:
             self.alien_type = "blue"
         else:
-            self.alien_type = "yellow"
+            if random_alien == 5 and not self.alien_type == "random":
+                self.alien_type = "random"
+            else:
+                self.alien_type = "yellow"
+
         return self.alien_type
 
     def _create_alien(self, alien_number, row_number):
         # creates ab alien and places it in the row
+        """There is code redundancy here. FIX"""
         if self.stats.repeat_game:
             alien = Alien(self, "yellow")
         else:
@@ -169,7 +176,9 @@ class ALienInvasion:
         else:
             alien = Alien(self, self._check_alien_type())
 
+        # reset the level
         self.start_time = time.time()
+        self.settings.bullet_width = 3000
 
         alien_width, alien_height = alien.rect.size
         available_space_x = self.settings.screen_width - (2 * alien_width)
@@ -184,6 +193,7 @@ class ALienInvasion:
         for row_number in range(number_rows):
             for alien_number in range(number_aliens_x):
                 self._create_alien(alien_number, row_number)
+        print(self.aliens)
 
     # ALIEN FLEET MOVING FUNCTIONS
     def _check_fleet_edges(self):
@@ -258,6 +268,7 @@ class ALienInvasion:
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
         if collisions:
+            print(self.alien.is_red)
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()

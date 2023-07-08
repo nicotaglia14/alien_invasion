@@ -1,7 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
 from game_stats import GameStats
-from bullet import Bullet
 
 
 # class to represent the alien
@@ -15,12 +14,18 @@ class Alien(Sprite):
         self.scoreboard = ai_game.sb
         self.stats = GameStats(self)
         self.level = self.stats.level
+        self.is_red = False
 
         # load the alien image and set its rect attribute
         if alien_type == "yellow":
             self.image = pygame.image.load('images/alien2.png')
+            self.is_red = False
         elif alien_type == "blue":
             self.image = pygame.image.load('images/alien.png')
+            self.is_red = False
+        elif alien_type == "random":
+            self.image = pygame.image.load('images/alien1.png')
+            self.is_red = True
         else:
             # Default to dynamic image if image_type is not recognized
             self.image = pygame.image.load('images/alien2.png')
@@ -45,6 +50,8 @@ class Alien(Sprite):
         self.x += (self.settings.alien_speed * self.settings.fleet_direction)
         self.rect.x = self.x
 
+    """
     def fire_back(self, bullets_group):
         bullet = Bullet(self.rect.centerx, self.rect.bottom)
         bullets_group.add(bullet)
+        """
