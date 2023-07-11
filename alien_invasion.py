@@ -2,6 +2,7 @@ import sys
 import random
 import time
 from time import sleep
+
 import pygame
 from settings import Settings
 from game_stats import GameStats
@@ -36,8 +37,9 @@ class ALienInvasion:
         self.bullets = pygame.sprite.Group()
         self.alien_bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
+        self.red_aliens_group = pygame.sprite.Group()
         self._create_fleet()
-        self.alien = Alien(self)
+        self.alien = Alien(self, "yellow")
 
         # make the play and quit buttons
         self.play_button = Button(self, "Play", (0, 255, 0), 430)
@@ -94,6 +96,7 @@ class ALienInvasion:
             self.stats.reset_stats()
             self.stats.game_active = True
             self.aliens.empty()
+            self.red_aliens_group.empty()
             self.bullets.empty()
             self.alien_bullets.empty()
             self.sb.prep_score()
@@ -132,20 +135,18 @@ class ALienInvasion:
 
     # ALIEN-RELATED FUNCTIONS
     def _check_alien_type(self):
-        random_alien = random.randint(1, 50)
+        random_alien = random.randint(1, 20)
         if (self.stats.level + 1) % 5 == 0:
             self.alien_type = "blue"
+        elif random_alien == 5 and not self.alien_type == "random":
+            self.alien_type = "random"
         else:
-            if random_alien == 5 and not self.alien_type == "random":
-                self.alien_type = "random"
-            else:
-                self.alien_type = "yellow"
+            self.alien_type = "yellow"
 
         return self.alien_type
 
     def _create_alien(self, alien_number, row_number):
         # creates ab alien and places it in the row
-        """There is code redundancy here. FIX"""
         if self.stats.repeat_game:
             alien = Alien(self, "yellow")
         else:
@@ -156,6 +157,8 @@ class ALienInvasion:
         alien.rect.x = alien.x
         alien.rect.y = alien_height + 2 * alien.rect.height * row_number
         self.aliens.add(alien)
+        if self.alien_type == "random":
+            self.red_aliens_group.add(alien)
 
     def _update_aliens(self):
         # update the positions of every alien in the fleet
@@ -178,7 +181,6 @@ class ALienInvasion:
 
         # reset the level
         self.start_time = time.time()
-        self.settings.bullet_width = 3000
 
         alien_width, alien_height = alien.rect.size
         available_space_x = self.settings.screen_width - (2 * alien_width)
@@ -193,7 +195,6 @@ class ALienInvasion:
         for row_number in range(number_rows):
             for alien_number in range(number_aliens_x):
                 self._create_alien(alien_number, row_number)
-        print(self.aliens)
 
     # ALIEN FLEET MOVING FUNCTIONS
     def _check_fleet_edges(self):
@@ -265,10 +266,14 @@ class ALienInvasion:
     def _check_bullet_alien_collision(self):
         # check for any bullets that have hit aliens
         # if so, get rid of the bullet and the alien
+        red_aliens_collisions = pygame.sprite.groupcollide(self.bullets, self.red_aliens_group, True, True)
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
+        if red_aliens_collisions:
+            self.settings.bullet_speed = 10.0
+            self.settings.bullet_width += 1000
+
         if collisions:
-            print(self.alien.is_red)
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
@@ -316,6 +321,7 @@ class ALienInvasion:
 
         # get rid of any remaining aliens and bullets
         self.aliens.empty()
+        self.red_aliens_group.empty()
         self.bullets.empty()
         self.alien_bullets.empty()
 
