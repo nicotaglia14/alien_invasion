@@ -48,6 +48,8 @@ class ALienInvasion:
         # set a starting time
         self.last_alien_shot_time = 0
 
+        self.super_power = False
+
     # MAIN FUNCTIONS TO RUN THE GAME
     def run_game(self):
         # Start the main loop for the game
@@ -270,8 +272,8 @@ class ALienInvasion:
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
         if red_aliens_collisions:
-            self.settings.bullet_speed = 10.0
-            self.settings.bullet_width += 1000
+            self.super_power = True
+            self.power_time = time.time()
 
         if collisions:
             for aliens in collisions.values():
@@ -355,6 +357,12 @@ class ALienInvasion:
         # show the counter every 5 levels
         if (self.stats.level % 5) == 0 and self.sb.elapsed_time > 0 and self.stats.game_active:
             self.sb.timer_count()
+
+        if self.super_power and self.stats.game_active:
+            self.sb.timer_count()
+            self.settings.alien_speed /= 2
+        elif not self.super_power and self.stats.game_active:
+            self.settings.alien_speed = 1.5
 
         pygame.display.flip()
 

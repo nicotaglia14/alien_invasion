@@ -88,7 +88,6 @@ class Scoreboard:
         self.banners_rect.centerx = self.screen_rect.centerx
         self.banners_rect.y = 90
 
-
     def timer_count(self):
         self.elapsed_time = round(10 - (time.time() - self.ai_game.start_time))
         timer_str = "Bonus: {} seconds".format(self.elapsed_time)
@@ -97,6 +96,9 @@ class Scoreboard:
         self.timer_rect.centerx = self.screen_rect.centerx
         self.timer_rect.top = self.high_score_rect.bottom
         self.screen.blit(self.timer_image, self.timer_rect)
+
+        if time.time() - self.ai_game.power_time > 3:
+            self.ai_game.super_power = False
 
     def show_score(self):
         # draw scores, level, and ships to the screen
