@@ -53,6 +53,7 @@ class Ship(Sprite):
         self.rect.y = self.y
 
     def powers(self):
+        print("Saving")
         self.settings.save_dynamic_settings()
         self.super_power = True
         self.settings.alien_speed /= 2

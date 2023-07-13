@@ -61,6 +61,7 @@ class ALienInvasion:
                 self._update_aliens()
                 self.ship.update()
                 self._update_bullets()
+                print(self.ship.super_power)
                 if self.stats.level > 5:
                     self._fire_alien_bullet()
 
@@ -272,6 +273,7 @@ class ALienInvasion:
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
         if red_aliens_collisions:
+            self.sb.power_elapsed_time = 4
             self.power_time = time.time()
             self.ship.powers()
 
@@ -292,15 +294,13 @@ class ALienInvasion:
                 self.sb.prep_ships()
                 self.sb.static_lives()
 
-            if self.stats.level % 2 == 0:
-                self.settings.increase_speed()
-
             # increase level
             self.stats.level += 1
             self.sb.prep_level()
 
             # increase points
             self.settings.increase_points()
+            self.settings.increase_speed()
 
         self.stats.repeat_game = False
 
@@ -359,7 +359,7 @@ class ALienInvasion:
             self.sb.timer_count()
 
         # show the timer for the powers
-        if self.ship.super_power:
+        if self.ship.super_power and self.sb.power_elapsed_time > 0 and self.stats.game_active:
             self.sb.power_timer()
 
         pygame.display.flip()

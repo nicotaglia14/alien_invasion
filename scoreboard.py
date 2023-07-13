@@ -110,6 +110,8 @@ class Scoreboard:
         self.screen.blit(self.timer_image, self.timer_rect)
 
         if self.power_elapsed_time < 0:
+            print("resetting")
+            self.settings.reset_dynamic_settings()
             self.ship.super_power = False
 
     def show_score(self):
