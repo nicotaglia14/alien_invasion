@@ -15,8 +15,6 @@ class Alien(Sprite):
         self.stats = GameStats(self)
         self.level = self.stats.level
 
-        self.red_aliens = []
-
         # load the alien image and set its rect attribute
         if alien_type == "yellow":
             self.image = pygame.image.load('images/alien2.png')

@@ -1,3 +1,5 @@
+import random
+import pygame.font
 import pygame
 from pygame.sprite import Sprite
 
@@ -7,9 +9,12 @@ class Ship(Sprite):
     def __init__(self, ai_game):
         # Initialize the ship and set its starting position.
         super().__init__()
+
+        self.ai_game = ai_game
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
+        self.sb = ai_game.sb
 
         # load the ship image and get its rect
         self.image = pygame.image.load('images/ship.png')
@@ -28,6 +33,10 @@ class Ship(Sprite):
         self.moving_up = False
         self.moving_down = False
 
+        # set the superpower to be active
+        self.super_power = False
+        self.font = pygame.font.SysFont('', 48)
+
     def update(self):
         # updates the ships (x and y) position based on the movement flag
         if self.moving_right and self.rect.right < self.screen_rect.right:
@@ -42,6 +51,11 @@ class Ship(Sprite):
         # update rectangle object from self.x
         self.rect.x = self.x
         self.rect.y = self.y
+
+    def powers(self):
+        self.settings.save_dynamic_settings()
+        self.super_power = True
+        self.settings.alien_speed /= 2
 
     def blitme(self):
         # prints the ship image

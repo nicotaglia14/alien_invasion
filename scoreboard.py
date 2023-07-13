@@ -1,5 +1,5 @@
 import time
-
+import ship
 import pygame.font
 from pygame.sprite import Group
 from lives import Life
@@ -14,10 +14,12 @@ class Scoreboard:
         self.screen_rect = self.screen.get_rect()
         self.settings = ai_game.settings
         self.stats = ai_game.stats
+        self.ship = ship
 
         # font settings for scoring information
         self.text_color = (255, 255, 255)
         self.bonus_color = (255, 255, 0)
+        self.power_color = (0, 255, 0)
         self.font = pygame.font.SysFont('', 48)
 
         # prepare the initial score images
@@ -27,6 +29,7 @@ class Scoreboard:
         self.prep_ships()
 
         self.elapsed_time = 1
+        self.power_elapsed_time = 1
 
     def prep_score(self):
         # turn the score into a rendered image
@@ -97,8 +100,17 @@ class Scoreboard:
         self.timer_rect.top = self.high_score_rect.bottom
         self.screen.blit(self.timer_image, self.timer_rect)
 
-        if time.time() - self.ai_game.power_time > 3:
-            self.ai_game.super_power = False
+    def power_timer(self):
+        self.power_elapsed_time = round(4 - (time.time() - self.ai_game.power_time))
+        timer_str = "POWER: {} seconds".format(self.power_elapsed_time)
+        self.timer_image = self.font.render(timer_str, True, self.power_color, None)
+        self.timer_rect = self.timer_image.get_rect()
+        self.timer_rect.centerx = self.screen_rect.centerx
+        self.timer_rect.top = self.high_score_rect.bottom
+        self.screen.blit(self.timer_image, self.timer_rect)
+
+        if self.power_elapsed_time < 0:
+            self.ship.super_power = False
 
     def show_score(self):
         # draw scores, level, and ships to the screen

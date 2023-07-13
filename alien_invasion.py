@@ -2,7 +2,6 @@ import sys
 import random
 import time
 from time import sleep
-
 import pygame
 from settings import Settings
 from game_stats import GameStats
@@ -30,14 +29,16 @@ class ALienInvasion:
         self.background_image = pygame.transform.scale(self.background_image,
                                                        (self.settings.screen_width, self.settings.screen_height))
 
-        # create an instance to store game statistics, and create a scoreboard
-        self.stats = GameStats(self)
-        self.sb = Scoreboard(self)
-        self.ship = Ship(self)
+        # Create the groups for the game
         self.bullets = pygame.sprite.Group()
         self.alien_bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
         self.red_aliens_group = pygame.sprite.Group()
+
+        # create an instance to store game statistics, and create a scoreboard
+        self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
+        self.ship = Ship(self)
         self._create_fleet()
         self.alien = Alien(self, "yellow")
 
@@ -47,8 +48,6 @@ class ALienInvasion:
 
         # set a starting time
         self.last_alien_shot_time = 0
-
-        self.super_power = False
 
     # MAIN FUNCTIONS TO RUN THE GAME
     def run_game(self):
@@ -175,6 +174,7 @@ class ALienInvasion:
         self._check_aliens_bottom()
 
     def _create_fleet(self):
+
         # create an alien and then a fleet
         if self.stats.repeat_game:
             alien = Alien(self, "yellow")
@@ -272,8 +272,8 @@ class ALienInvasion:
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
         if red_aliens_collisions:
-            self.super_power = True
             self.power_time = time.time()
+            self.ship.powers()
 
         if collisions:
             for aliens in collisions.values():
@@ -358,11 +358,9 @@ class ALienInvasion:
         if (self.stats.level % 5) == 0 and self.sb.elapsed_time > 0 and self.stats.game_active:
             self.sb.timer_count()
 
-        if self.super_power and self.stats.game_active:
-            self.sb.timer_count()
-            self.settings.alien_speed /= 2
-        elif not self.super_power and self.stats.game_active:
-            self.settings.alien_speed = 1.5
+        # show the timer for the powers
+        if self.ship.super_power:
+            self.sb.power_timer()
 
         pygame.display.flip()
 

@@ -34,6 +34,11 @@ class Settings:
         # how quickly the alien point values increase
         self.score_scale = 1.5
 
+        # initialize the memory settings
+        self.mem_ship_speed = self.ship_speed
+        self.mem_bullet_speed = self.bullet_speed
+        self.mem_alien_speed = self.alien_speed
+
     def initialize_dynamic_settings(self):
         # initialize settings that change throughout the game
         self.ship_speed = 2
@@ -49,6 +54,16 @@ class Settings:
 
         # difference between shots
         self.shot_gap = 3
+
+    def save_dynamic_settings(self):
+        self.mem_ship_speed = self.ship_speed
+        self.mem_bullet_speed = self.bullet_speed
+        self.mem_alien_speed = self.alien_speed
+
+    def reset_dynamic_settings(self):
+        self.ship_speed = self.mem_ship_speed
+        self.bullet_speed = self.mem_bullet_speed
+        self.alien_speed = self.mem_alien_speed
 
     def increase_speed(self):
         # increase speed settings and alien point values
