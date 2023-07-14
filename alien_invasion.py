@@ -61,7 +61,6 @@ class ALienInvasion:
                 self._update_aliens()
                 self.ship.update()
                 self._update_bullets()
-                print(self.ship.super_power)
                 if self.stats.level > 5:
                     self._fire_alien_bullet()
 
@@ -175,7 +174,6 @@ class ALienInvasion:
         self._check_aliens_bottom()
 
     def _create_fleet(self):
-
         # create an alien and then a fleet
         if self.stats.repeat_game:
             alien = Alien(self, "yellow")
@@ -275,6 +273,7 @@ class ALienInvasion:
         if red_aliens_collisions:
             self.sb.power_elapsed_time = 4
             self.power_time = time.time()
+
             self.ship.powers()
 
         if collisions:
