@@ -373,6 +373,8 @@ class ALienInvasion:
         if self.sb.power_elapsed_time <= 0:
             self.ship.super_power = False
 
+        print("HIIIII")
+
         pygame.display.flip()
 
 
