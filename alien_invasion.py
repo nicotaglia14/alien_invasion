@@ -305,7 +305,7 @@ class ALienInvasion:
             self.settings.increase_speed()
 
             # update the settings and the memory
-            if not self.ship.super_power:
+            if self.ship.super_power:
                 self.settings.save_dynamic_settings()
 
                 """WHAT HAPPENS IF THE PLAYER CHANGES LEVELS WHILE HAVING THE POWERS??????"""
