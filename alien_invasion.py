@@ -136,10 +136,10 @@ class ALienInvasion:
 
     # ALIEN-RELATED FUNCTIONS
     def _check_alien_type(self):
-        random_alien = random.randint(1, 20)
+        random_alien = random.randint(1, 3)
         if (self.stats.level + 1) % 5 == 0:
             self.alien_type = "blue"
-        elif random_alien == 5 and not self.alien_type == "random":
+        elif random_alien == 3 and not self.red_aliens_group:
             self.alien_type = "random"
         else:
             self.alien_type = "yellow"
@@ -180,7 +180,7 @@ class ALienInvasion:
         else:
             alien = Alien(self, self._check_alien_type())
 
-        # reset the level
+        # reset the time
         self.start_time = time.time()
 
         alien_width, alien_height = alien.rect.size
@@ -270,7 +270,7 @@ class ALienInvasion:
         red_aliens_collisions = pygame.sprite.groupcollide(self.bullets, self.red_aliens_group, True, True)
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
-        if red_aliens_collisions:
+        if red_aliens_collisions and not self.ship.super_power:
             self.sb.power_elapsed_time = 4
             self.power_time = time.time()
 
@@ -284,10 +284,13 @@ class ALienInvasion:
 
         # destroy existing bullets and create new fleet
         if not self.aliens:
+
+            # empty the groups
             self.bullets.empty()
             self.alien_bullets.empty()
             self._create_fleet()
 
+            # check if they destroyed the fleet before the bonus was gone
             if self.sb.elapsed_time > 0 and self.stats.level % 5 == 0:
                 self.stats.bonus()
                 self.sb.prep_ships()
@@ -300,6 +303,12 @@ class ALienInvasion:
             # increase points
             self.settings.increase_points()
             self.settings.increase_speed()
+
+            # update the settings and the memory
+            if not self.ship.super_power:
+                self.settings.save_dynamic_settings()
+
+                """WHAT HAPPENS IF THE PLAYER CHANGES LEVELS WHILE HAVING THE POWERS??????"""
 
         self.stats.repeat_game = False
 
@@ -360,6 +369,9 @@ class ALienInvasion:
         # show the timer for the powers
         if self.ship.super_power and self.sb.power_elapsed_time > 0 and self.stats.game_active:
             self.sb.power_timer()
+
+        if self.sb.power_elapsed_time <= 0:
+            self.ship.super_power = False
 
         pygame.display.flip()
 
