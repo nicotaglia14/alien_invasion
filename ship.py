@@ -32,8 +32,6 @@ class Ship(Sprite):
         self.moving_up = False
         self.moving_down = False
 
-        # set the superpower to be active
-        self.super_power = False
         self.font = pygame.font.SysFont('', 48)
 
     def update(self):
@@ -50,11 +48,6 @@ class Ship(Sprite):
         # update rectangle object from self.x
         self.rect.x = self.x
         self.rect.y = self.y
-
-    def powers(self):
-        self.settings.save_dynamic_settings()
-        self.super_power = True
-        self.settings.bullet_width = 3000
 
     def blitme(self):
         # prints the ship image

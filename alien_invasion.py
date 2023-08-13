@@ -10,6 +10,7 @@ from bullet import Bullet
 from alien import Alien
 from button import Button
 from scoreboard import Scoreboard
+from powers import Power
 
 
 # Overall class to manage game assets and behavior
@@ -39,6 +40,7 @@ class ALienInvasion:
         self.stats = GameStats(self)
         self.sb = Scoreboard(self)
         self.ship = Ship(self)
+        self.power = Power(self)
         self._create_fleet()
         self.alien = Alien(self, "yellow")
 
@@ -270,11 +272,11 @@ class ALienInvasion:
         red_aliens_collisions = pygame.sprite.groupcollide(self.bullets, self.red_aliens_group, True, True)
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
-        if red_aliens_collisions and not self.ship.super_power:
+        if red_aliens_collisions:
             self.sb.power_elapsed_time = 4
             self.power_time = time.time()
 
-            self.ship.powers()
+            self.power.get_powers()
 
         if collisions:
             for aliens in collisions.values():
@@ -305,10 +307,8 @@ class ALienInvasion:
             self.settings.increase_speed()
 
             # update the settings and the memory
-            if self.ship.super_power:
+            if not self.power.power_active:
                 self.settings.save_dynamic_settings()
-
-                """WHAT HAPPENS IF THE PLAYER CHANGES LEVELS WHILE HAVING THE POWERS??????"""
 
         self.stats.repeat_game = False
 
@@ -367,11 +367,11 @@ class ALienInvasion:
             self.sb.timer_count()
 
         # show the timer for the powers
-        if self.ship.super_power and self.sb.power_elapsed_time > 0 and self.stats.game_active:
+        if self.power.power_active and self.sb.power_elapsed_time > 0 and self.stats.game_active:
             self.sb.power_timer()
 
         if self.sb.power_elapsed_time <= 0:
-            self.ship.super_power = False
+            self.power.power_active = False
 
         pygame.display.flip()
 

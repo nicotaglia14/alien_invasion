@@ -3,6 +3,7 @@ import ship
 import pygame.font
 from pygame.sprite import Group
 from lives import Life
+import powers
 
 
 class Scoreboard:
@@ -15,6 +16,7 @@ class Scoreboard:
         self.settings = ai_game.settings
         self.stats = ai_game.stats
         self.ship = ship
+        self.power = powers
 
         # font settings for scoring information
         self.text_color = (255, 255, 255)
@@ -97,7 +99,12 @@ class Scoreboard:
         self.timer_image = self.font.render(timer_str, True, self.bonus_color, None)
         self.timer_rect = self.timer_image.get_rect()
         self.timer_rect.centerx = self.screen_rect.centerx
-        self.timer_rect.top = self.high_score_rect.bottom
+
+        """ I AM TRYING TO IMPORT THE CORRECT WAY BUT ITS NOT IMPORTING THE OTHER CLASS"""
+        if self.power.power_active:
+            self.timer_rect.top = (self.high_score_rect.bottom + 30)
+        else:
+            self.timer_rect.top = self.high_score_rect.bottom
         self.screen.blit(self.timer_image, self.timer_rect)
 
     def power_timer(self):
