@@ -38,9 +38,9 @@ class ALienInvasion:
 
         # create an instance to store game statistics, and create a scoreboard
         self.stats = GameStats(self)
+        self.power = Power(self)
         self.sb = Scoreboard(self)
         self.ship = Ship(self)
-        self.power = Power(self)
         self._create_fleet()
         self.alien = Alien(self, "yellow")
 

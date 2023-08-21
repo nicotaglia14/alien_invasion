@@ -11,7 +11,7 @@ class Power:
             self.settings.save_dynamic_settings()
 
         self.power_active = True
-        rand_power = 4
+        rand_power = random.randint(1, 4)
 
         if rand_power == 1:
             self.super_speed()
@@ -23,14 +23,15 @@ class Power:
             self.big_bullet()
 
     def super_speed(self):
-        self.settings.ship_speed *= 2
+        self.settings.ship_speed *= 3
 
     def slow_motion(self):
         self.settings.alien_speed /= 2
         self.settings.alien_bullet_speed /= 2
 
     def big_bullet(self):
-        self.settings.bullet_width = 3000
+        self.settings.bullet_width = 100
 
     def super_bullets(self):
+        self.settings.bullet_speed *= 3
         print("super bullets active")
