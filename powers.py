@@ -6,20 +6,22 @@ class Power:
         self.settings = ai_game.settings
         self.power_active = False
 
+        self.rand_power = 0
+
     def get_powers(self):
         if not self.power_active:
             self.settings.save_dynamic_settings()
 
         self.power_active = True
-        rand_power = random.randint(1, 4)
+        self.rand_power = random.randint(1, 4)
 
-        if rand_power == 1:
+        if self.rand_power == 1:
             self.super_speed()
-        elif rand_power == 2:
+        elif self.rand_power == 2:
             self.slow_motion()
-        elif rand_power == 3:
+        elif self.rand_power == 3:
             self.super_bullets()
-        elif rand_power == 4:
+        elif self.rand_power == 4:
             self.big_bullet()
 
     def super_speed(self):

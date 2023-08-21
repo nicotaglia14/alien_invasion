@@ -267,10 +267,13 @@ class ALienInvasion:
                 break
 
     def _check_bullet_alien_collision(self):
-        # check for any bullets that have hit aliens
-        # if so, get rid of the bullet and the alien
+        # check for any bullets that have hit aliens if so, get rid of the bullet and the alien
         red_aliens_collisions = pygame.sprite.groupcollide(self.bullets, self.red_aliens_group, True, True)
-        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+
+        if self.power.power_active and self.power.rand_power == 3:
+            collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, False)
+        else:
+            collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
         if red_aliens_collisions:
             self.sb.power_elapsed_time = 4
