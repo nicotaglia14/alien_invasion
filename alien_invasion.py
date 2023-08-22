@@ -271,7 +271,7 @@ class ALienInvasion:
         red_aliens_collisions = pygame.sprite.groupcollide(self.bullets, self.red_aliens_group, True, True)
 
         if self.power.power_active and self.power.rand_power == 3:
-            collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, False)
+            collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, False, True)
         else:
             collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
