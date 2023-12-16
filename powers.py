@@ -36,4 +36,4 @@ class Power:
 
     def super_bullets(self):
         self.settings.bullet_speed *= 3
-        print("super bullets active")
+        self.settings.bullet_color = (0, 255, 0)

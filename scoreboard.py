@@ -17,8 +17,6 @@ class Scoreboard:
         self.power = ai_game.power
         self.ship = ship
 
-
-
         # font settings for scoring information
         self.text_color = (255, 255, 255)
         self.bonus_color = (255, 255, 0)

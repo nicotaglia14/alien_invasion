@@ -40,6 +40,7 @@ class Settings:
         self.mem_alien_speed = 0
         self.mem_bullet_width = 0
         self.mem_alien_bullet_speed = 0
+        self.mem_bullet_color = (255, 255, 255)
 
     def initialize_dynamic_settings(self):
         # initialize settings that change throughout the game
@@ -63,6 +64,7 @@ class Settings:
         self.mem_alien_speed = self.alien_speed
         self.mem_bullet_width = self.bullet_width
         self.mem_alien_bullet_speed = self.alien_bullet_speed
+        self.mem_bullet_color = self.bullet_color
 
     def reset_dynamic_settings(self):
         self.ship_speed = self.mem_ship_speed
@@ -70,6 +72,7 @@ class Settings:
         self.alien_speed = self.mem_alien_speed
         self.bullet_width = self.mem_bullet_width
         self.alien_bullet_speed = self.mem_alien_bullet_speed
+        self.bullet_color = self.mem_bullet_color
 
     def increase_speed(self):
         # increase speed settings and alien point values
