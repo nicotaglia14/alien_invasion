@@ -1,3 +1,3 @@
 #Alien Invasion
 
-<u>Used Languages</u>
+Alien Invasion created in Python.
