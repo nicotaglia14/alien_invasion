@@ -1,3 +1,3 @@
 Alien Invasion
 
-Alien Invasion created in Python.
+Alien Invasion created in Python using Pygame
